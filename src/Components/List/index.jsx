@@ -1,18 +1,31 @@
-import React, { useContext } from 'react';
-import { SettingsContext } from '../../Context/Settings';
+import React from 'react';
+import { useSettings } from '../../Context/Settings';
+import { Pagination } from '@mantine/core';
 
 const List = ({ items }) => {
-  const { itemsToShow, hideCompleted } = useContext(SettingsContext);
-  const filteredItems = items.filter(item => !hideCompleted || !item.completed);
-  const paginatedItems = filteredItems.slice(0, itemsToShow);
+  const { settings } = useSettings();
+  const [activePage, setActivePage] = React.useState(1);
+
+  
+  const visibleItems = settings.showCompleted ? items : items.filter(item => !item.complete);
+  
+
+  const paginatedItems = visibleItems.slice((activePage - 1) * settings.itemsPerPage, activePage * settings.itemsPerPage);
+  
 
   return (
-    <div>
+    <>
       {paginatedItems.map(item => (
-        <div key={item.id}>{item.text}</div>
+        <div key={item.id}>
+          {/* Item rendering logic */}
+        </div>
       ))}
-      {/* Pagination component to be added */}
-    </div>
+      <Pagination
+        page={activePage}
+        onChange={setActivePage}
+        total={Math.ceil(visibleItems.length / settings.itemsPerPage)}
+      />
+    </>
   );
 };
 

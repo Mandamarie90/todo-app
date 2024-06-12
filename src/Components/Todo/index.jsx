@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import useForm from '../../hooks/form';
 import { v4 as uuid } from 'uuid';
-import { Pagination } from '@mantine/core';
+import { Pagination, Checkbox, Button } from '@mantine/core';
 
 const Todo = () => {
   const [defaultValues] = useState({ difficulty: 4 });
@@ -22,15 +22,14 @@ const Todo = () => {
     setList(items);
   }
 
-  function toggleComplete(id) {
-    const items = list.map(item => {
+  const toggleComplete = (id) => {
+    setList(list.map(item => {
       if (item.id === id) {
-        item.complete = !item.complete;
+        return { ...item, complete: !item.complete };
       }
       return item;
-    });
-    setList(items);
-  }
+    }));
+  };
 
   useEffect(() => {
     let incompleteCount = list.filter(item => !item.complete).length;
@@ -49,24 +48,26 @@ const Todo = () => {
 
       <form onSubmit={handleSubmit}>
         <h2>Add To Do Item</h2>
-
+  
         <label>
           <span>To Do Item</span>
           <input onChange={handleChange} name="text" type="text" placeholder="Item Details" />
         </label>
-
+  
         <label>
           <span>Assigned To</span>
           <input onChange={handleChange} name="assignee" type="text" placeholder="Assignee Name" />
         </label>
-
+  
         <label>
           <span>Difficulty</span>
           <input onChange={handleChange} defaultValue={defaultValues.difficulty} type="range" min={1} max={5} name="difficulty" />
         </label>
-
+  
         <label>
-        <button variant="gradient">Submit</button>
+          <Button type="submit" variant="gradient" gradient={{ from: 'pink', to: 'grape', deg: 0 }}>
+            Submit
+          </Button>
         </label>
       </form>
 
@@ -75,8 +76,19 @@ const Todo = () => {
           <p>{item.text}</p>
           <p><small>Assigned to: {item.assignee}</small></p>
           <p><small>Difficulty: {item.difficulty}</small></p>
-          <div onClick={() => toggleComplete(item.id)}>Complete: {item.complete.toString()}</div>
-          <button onClick={() => deleteItem(item.id)}>Delete</button>
+          <Checkbox
+            checked={item.complete}
+            onChange={() => toggleComplete(item.id)}
+            label="Complete"
+            style={{ textDecoration: item.complete ? 'line-through' : 'none' }}
+          />
+          <Button
+            onClick={() => deleteItem(item.id)}
+            variant="gradient"
+            gradient={{ from: 'pink', to: 'grape', deg: 0 }}
+          >
+            Delete
+          </Button>
           <hr />
         </div>
       ))}

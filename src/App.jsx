@@ -1,17 +1,26 @@
 import React from 'react';
-
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Header from './Components/Header';
+import Footer from './Components/Footer';
 import Todo from './Components/Todo';
-import Header from './Components/Header/index'
-import Footer from './Components/Footer/index'
+import SettingsManagement from './Components/Form/index';
+// import DisplaySettings from './Components//Display/DisplaySettings'; 
+import { SettingsProvider } from './Context/Settings';
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <div>
+const App = () => {
+  return (
+    <SettingsProvider>
+      <Router>
         <Header />
-      <Todo />
-      <Footer />
-      </div>
-    );
-  }
-}
+        <Routes>
+          <Route path="/" element={<Todo />} />
+          <Route path="/settings" element={<SettingsManagement />} />
+          {/* <Route path="/display-settings" element={<DisplaySettings />} /> */}
+        </Routes>
+        <Footer />
+      </Router>
+    </SettingsProvider>
+  );
+};
+
+export default App;

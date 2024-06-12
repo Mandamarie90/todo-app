@@ -1,19 +1,34 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 const SettingsContext = createContext();
 
+export const useSettings = () => useContext(SettingsContext);
+
 export const SettingsProvider = ({ children }) => {
   const [settings, setSettings] = useState({
-    itemsToShow: 3,
-    hideCompleted: true,
-    defaultSort: 'difficulty',
+    showCompleted: true,
+    itemsPerPage: 5,
+    defaultSort: 'date'
   });
 
+ 
+
+  const saveSettings = (newSettings) => {
+    setSettings(newSettings);
+    localStorage.setItem('appSettings', JSON.stringify(newSettings));
+  };
+
+  // Load settings from local storage on startup
+  useEffect(() => {
+    const savedSettings = localStorage.getItem('appSettings');
+    if (savedSettings) {
+      setSettings(JSON.parse(savedSettings));
+    }
+  }, []);
+
   return (
-    <SettingsContext.Provider value={{ settings, setSettings }}>
+    <SettingsContext.Provider value={{ settings, saveSettings }}>
       {children}
     </SettingsContext.Provider>
   );
 };
-
-export const useSettings = () => useContext(SettingsContext);
