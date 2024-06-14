@@ -1,19 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Card, Checkbox, NumberInput, Select } from '@mantine/core';
 import { useSettings } from '../../Context/Settings';
+import { useAuth } from '../../Context/Auth';  // Import useAuth to access authentication context
 
 const SettingsManagement = () => {
   const { settings, saveSettings } = useSettings();
+  const { user } = useAuth();  // Get user from authentication context
   const [localSettings, setLocalSettings] = useState(settings);
 
-  // Effect to update local settings when the global settings change
   useEffect(() => {
     setLocalSettings(settings);
   }, [settings]);
 
   const handleSave = () => {
+    if (!user) {
+      alert("Please log in to save settings.");
+      return;  // Prevent saving settings if not logged in
+    }
     saveSettings(localSettings);
   };
+
+  if (!user) {
+    return <div>Please log in to manage settings.</div>;  // Show login prompt if not logged in
+  }
 
   return (
     <div>

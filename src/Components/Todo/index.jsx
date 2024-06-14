@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { useAuth } from '../../Context/Auth/index'; // Import the useAuth hook
 import useForm from '../../hooks/form';
 import { v4 as uuid } from 'uuid';
 import { Pagination, Checkbox, Button } from '@mantine/core';
 
 const Todo = () => {
+  const { user } = useAuth(); // Use the useAuth hook to access user info
   const [defaultValues] = useState({ difficulty: 4 });
   const [list, setList] = useState([]);
   const [incomplete, setIncomplete] = useState(0);
@@ -12,17 +14,29 @@ const Todo = () => {
   const { handleChange, handleSubmit } = useForm(addItem, defaultValues);
 
   function addItem(item) {
+    if (!user) {
+      alert("Please log in to add items.");
+      return; // Prevent adding items if not logged in
+    }
     item.id = uuid();
     item.complete = false;
     setList([...list, item]);
   }
 
   function deleteItem(id) {
+    if (!user) {
+      alert("Please log in to modify items.");
+      return; // Prevent deleting items if not logged in
+    }
     const items = list.filter(item => item.id !== id);
     setList(items);
   }
 
   const toggleComplete = (id) => {
+    if (!user) {
+      alert("Please log in to modify items.");
+      return; // Prevent toggling completion if not logged in
+    }
     setList(list.map(item => {
       if (item.id === id) {
         return { ...item, complete: !item.complete };

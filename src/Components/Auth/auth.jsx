@@ -1,18 +1,11 @@
-import { useContext } from 'react';
-import { When } from 'react-if';
-import { LoginContext } from './context';
+import { useAuth } from '../../Context/Auth/index';
 
 const Auth = ({ capability, children }) => {
-  const { loggedIn, user } = useContext(LoginContext);
-  const userCapabilities = user ? user.capabilities : [];
+  const auth = useAuth();  // Get the entire context object
 
-  const okToRender = loggedIn && userCapabilities.includes(capability);
+  if (!auth || !auth.user) return null; // Check if auth or user is not available
 
-  return (
-    <When condition={okToRender}>
-      {children}
-    </When>
-  );
+  return auth.hasCapability(capability) ? children : null;
 };
 
 export default Auth;
