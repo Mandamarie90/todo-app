@@ -1,9 +1,16 @@
-# React + Vite
+# Vite React App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a modern React application bootstrapped with Vite. It includes features such as Mantine UI components for styling and aims to provide a seamless development experience with fast rebuilds and a lightweight setup.
 
-Currently, two official plugins are available:
+## Getting Started
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-# todo-app
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+
+### Prerequisites
+
+What things you need to install the software and how to install them:
+
+```bash
+node.js - Download and install from [Node.js website](https://nodejs.org/)
+```
+![UML](./UML.png)
